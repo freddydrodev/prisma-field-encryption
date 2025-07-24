@@ -1,17 +1,30 @@
 {
-  "name": "prisma-field-encryption",
+  "name": "@freddydrodev/prisma-field-encryption",
   "version": "0.0.0-semantically-released",
   "description": "Transparent field-level encryption at rest for Prisma",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./generator": {
+      "types": "./dist/generator/main.d.ts",
+      "import": "./dist/generator/main.mjs",
+      "require": "./dist/generator/main.js"
+    }
+  },
   "license": "MIT",
   "bin": {
     "prisma-field-encryption": "./dist/generator/main.js"
   },
   "author": {
-    "name": "François Best",
-    "email": "contact@francoisbest.com",
-    "url": "https://francoisbest.com"
+    "name": "Freddy Drodev",
+    "email": "freddy@freddydrodev.com",
+    "url": "https://freddydro.dev"
   },
   "repository": {
     "type": "git",
@@ -23,14 +36,19 @@
     "encryption",
     "aes-256-gcm"
   ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "clean": "rm -rf ./dist ./coverage",
     "prebuild": "run-s generate:prisma",
-    "build": "tsc",
-    "postbuild": "chmod +x ./dist/generator/main.js && cd node_modules/.bin && ln -sf ../../dist/generator/main.js ./prisma-field-encryption",
+    "build": "tsup",
+    "postbuild": "cd node_modules/.bin && ln -sf ../../dist/generator/main.js ./prisma-field-encryption",
     "generate": "run-s generate:*",
     "generate:prisma": "prisma generate",
     "test": "run-s test:**",
@@ -46,6 +64,7 @@
   },
   "dependencies": {
     "@47ng/cloak": "^1.2.0",
+    "@47ng/codec": "^1.1.0",
     "@prisma/generator-helper": "^5.9.1",
     "debug": "^4.3.4",
     "immer": "^10.0.3",
@@ -73,6 +92,7 @@
     "sqlite3": "^5.1.7",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.0",
     "typescript": "^5.3.3"
   },
   "jest": {
@@ -123,5 +143,5 @@
       ]
     }
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }

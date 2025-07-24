@@ -32,12 +32,13 @@
     // Misc
     "skipLibCheck": true
   },
-  "include": ["**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": [
     "node_modules",
     "./dist",
     "./prisma",
     "./src/tests/migrate.ts",
-    "./src/tests/migrations/*.ts"
+    "./src/tests/migrations/*.ts",
+    "tsup.config.ts"
   ]
 }

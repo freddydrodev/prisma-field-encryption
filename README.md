@@ -603,6 +603,63 @@ encrypt credit card numbers or any other payment method information.
 - [x] Add facilities for migrations & key rotation
 - [ ] v2 cryptographic design with AEAD - [RFC #54](https://github.com/47ng/prisma-field-encryption/issues/54)
 
+## Development
+
+This project uses [tsup](https://github.com/egoist/tsup) for building both CommonJS and ESM outputs.
+
+### Build Setup
+
+The project builds two main targets:
+
+1. **Main library** (`src/index.ts`) - The field encryption extension and middleware
+2. **Generator** (`src/generator/main.ts`) - The Prisma generator CLI tool
+
+### Build Commands
+
+```bash
+# Build the project (generates both CJS and ESM)
+pnpm run build
+
+# Type checking
+pnpm run test:types
+
+# Run unit tests
+pnpm run test:unit
+
+# Run integration tests
+pnpm run test:integration
+```
+
+### Build Output
+
+The build generates the following files in the `dist/` directory:
+
+- `index.js` / `index.mjs` - Main library (CJS/ESM)
+- `index.d.ts` / `index.d.mts` - TypeScript declarations
+- `generator/main.js` / `generator/main.mjs` - Generator CLI tool
+- `generator/main.d.ts` / `generator/main.d.mts` - Generator types
+
+### Package Exports
+
+The package supports both CommonJS and ESM:
+
+```json
+{
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./generator": {
+      "types": "./dist/generator/main.d.ts",
+      "import": "./dist/generator/main.mjs",
+      "require": "./dist/generator/main.js"
+    }
+  }
+}
+```
+
 ## License
 
 [MIT](./LICENSE) - Made with ❤️ by [François Best](https://francoisbest.com)
