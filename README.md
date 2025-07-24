@@ -23,13 +23,19 @@ npm install prisma-field-encryption
 
 ## Prisma version compatibility
 
-This extension requires Prisma 4.7.0 or higher.
+This extension requires Prisma 4.7.0 or higher and supports up to Prisma 6.x.
 
 For Prisma versions 4.7.0 to 4.15.0, you will need to activate the
 `clientExtensions` preview feature, or use the [middleware interface](#middleware-interface).
 
 For Prisma versions 4.16.0 and higher, client extensions are generally available
 and don't require a preview feature flag.
+
+**Latest Prisma 6.x Support**: This library has been updated to work with the latest Prisma 6.12.0 and includes fixes for:
+
+- DMMF access patterns in newer Prisma versions
+- Turbo repo environment variable handling
+- Windows path compatibility in generated code
 
 > **Note**: The previous middleware interface is still available for Prisma
 > versions 3.8.0 to 4.6.x, but will be removed in a future update.
@@ -85,6 +91,28 @@ fieldEncryptionExtension({
 ```
 
 _Tip: a key provided in code will take precedence over a key from the environment._
+
+### Turbo Repo Compatibility
+
+If you're using Turbo repo, make sure to add the encryption key to your `turbo.json` configuration:
+
+```json
+{
+  "globalEnv": ["PRISMA_FIELD_ENCRYPTION_KEY", "PRISMA_FIELD_DECRYPTION_KEYS"]
+}
+```
+
+Or for specific tasks:
+
+```json
+{
+  "pipeline": {
+    "build": {
+      "env": ["PRISMA_FIELD_ENCRYPTION_KEY"]
+    }
+  }
+}
+```
 
 ### 3. Annotate your schema
 

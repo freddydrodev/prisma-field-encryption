@@ -2,7 +2,7 @@
 
 import { generatorHandler } from '@prisma/generator-helper'
 import fs from 'node:fs/promises'
-import path from 'path/posix'
+import path from 'node:path'
 import { analyseDMMF } from '../dmmf'
 import { generateIndex } from './generateIndex'
 import { generateModel } from './generateModel'
@@ -47,7 +47,7 @@ generatorHandler({
       'node_modules/@prisma/client'
     )
       ? '@prisma/client'
-      : path.relative(outputDir, prismaClientOutput)
+      : path.relative(outputDir, prismaClientOutput).replace(/\\/g, '/')
 
     const longestModelNameLength = Object.keys(validModels).reduce(
       (max, model) => Math.max(max, model.length),

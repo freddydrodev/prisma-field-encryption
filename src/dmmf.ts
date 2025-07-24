@@ -1,4 +1,5 @@
 import type { Encoding } from '@47ng/codec'
+import { z } from 'zod'
 import { errors, warnings } from './errors'
 import {
   DMMFDocument,
@@ -130,6 +131,31 @@ export function analyseDMMF(input: DMMFDocument): DMMFModels {
       [model.name]: modelDescriptor
     }
   }, {})
+}
+
+/**
+ * Get DMMF from Prisma client, handling different Prisma versions
+ */
+export function getDMMF() {
+  try {
+    // Try the new Prisma 6+ pattern first
+    const { Prisma } = require('@prisma/client')
+    if (Prisma.dmmf) {
+      return Prisma.dmmf
+    }
+
+    // Fallback to the old pattern
+    return require('@prisma/client').Prisma.dmmf
+  } catch (error) {
+    throw new Error(
+      `[prisma-field-encryption] Could not access Prisma DMMF. This might be due to:
+1. Prisma client not being generated (run 'prisma generate')
+2. Incompatible Prisma version
+3. Custom Prisma client location not properly configured
+
+Error: ${error instanceof Error ? error.message : String(error)}`
+    )
+  }
 }
 
 // --

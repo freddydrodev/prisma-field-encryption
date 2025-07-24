@@ -1,5 +1,5 @@
 import { debug } from './debugger'
-import { analyseDMMF } from './dmmf'
+import { analyseDMMF, getDMMF } from './dmmf'
 import { configureKeys, decryptOnRead, encryptOnWrite } from './encryption'
 import type { Configuration, Middleware, MiddlewareParams } from './types'
 
@@ -11,9 +11,7 @@ export function fieldEncryptionMiddleware<
   // or if anything is invalid.
   const keys = configureKeys(config)
   debug.setup('Keys: %O', keys)
-  const models = analyseDMMF(
-    config.dmmf ?? require('@prisma/client').Prisma.dmmf
-  )
+  const models = analyseDMMF(config.dmmf ?? getDMMF())
   debug.setup('Models: %O', models)
 
   return async function fieldEncryptionMiddleware(

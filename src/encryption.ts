@@ -23,14 +23,36 @@ export interface KeysConfiguration {
 }
 
 export function configureKeys(config: Configuration): KeysConfiguration {
+  // Enhanced environment variable handling for Turbo repo compatibility
   const encryptionKey =
-    config.encryptionKey || process.env.PRISMA_FIELD_ENCRYPTION_KEY
+    config.encryptionKey ||
+    process.env.PRISMA_FIELD_ENCRYPTION_KEY ||
+    process.env.PRISMA_FIELD_ENCRYPTION_KEY_OVERRIDE
 
   if (!encryptionKey) {
-    throw new Error(errors.noEncryptionKey)
+    // Provide more helpful error message for Turbo repo users
+    const errorMessage = process.env.TURBO_REPO
+      ? `${errors.noEncryptionKey}
+
+Turbo Repo detected. Make sure to:
+1. Add PRISMA_FIELD_ENCRYPTION_KEY to your turbo.json globalEnv or task-specific env
+2. Or set it in your .env file
+3. Or pass it directly in the configuration
+
+Example turbo.json:
+{
+  "globalEnv": ["PRISMA_FIELD_ENCRYPTION_KEY"]
+}`
+      : errors.noEncryptionKey
+
+    throw new Error(errorMessage)
   }
 
-  const decryptionKeysFromEnv = (process.env.PRISMA_FIELD_DECRYPTION_KEYS ?? '')
+  const decryptionKeysFromEnv = (
+    process.env.PRISMA_FIELD_DECRYPTION_KEYS ||
+    process.env.PRISMA_FIELD_DECRYPTION_KEYS_OVERRIDE ||
+    ''
+  )
     .split(',')
     .filter(Boolean)
 
@@ -213,7 +235,11 @@ function rewriteHashedFieldPath(
 ) {
   const items = path.split('.').reverse()
   // Special case for `where field equals or not` clause
-  if (items.includes('where') && items[1] === field && ['equals', 'not'].includes(items[0])) {
+  if (
+    items.includes('where') &&
+    items[1] === field &&
+    ['equals', 'not'].includes(items[0])
+  ) {
     items[1] = hashField
     return items.reverse().join('.')
   }
