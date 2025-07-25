@@ -134,18 +134,51 @@ export function analyseDMMF(input: DMMFDocument): DMMFModels {
 }
 
 /**
- * Get DMMF from Prisma client, handling different Prisma versions
+ * Get DMMF from Prisma client, handling different Prisma versions and custom locations
  */
 export function getDMMF() {
   try {
-    // Try the new Prisma 6+ pattern first
-    const { Prisma } = require('@prisma/client')
-    if (Prisma.dmmf) {
-      return Prisma.dmmf
+    // Try to get DMMF from the current module's Prisma import
+    // This works for both default and custom Prisma client locations
+    const moduleCache = require.cache
+    const prismaModules = Object.keys(moduleCache).filter(
+      key => key.includes('@prisma/client') || key.includes('prisma')
+    )
+
+    for (const modulePath of prismaModules) {
+      try {
+        const module = moduleCache[modulePath]
+        if (module && module.exports) {
+          // Try to get Prisma from the module exports
+          const Prisma = module.exports.Prisma || module.exports
+          if (Prisma && Prisma.dmmf) {
+            return Prisma.dmmf
+          }
+        }
+      } catch (e) {
+        // Continue to next module
+        continue
+      }
     }
 
-    // Fallback to the old pattern
-    return require('@prisma/client').Prisma.dmmf
+    // Fallback: Try the default @prisma/client location
+    try {
+      const { Prisma } = require('@prisma/client')
+      if (Prisma.dmmf) {
+        return Prisma.dmmf
+      }
+    } catch (e) {
+      // Continue to next fallback
+    }
+
+    // Final fallback: Try the old pattern
+    try {
+      return require('@prisma/client').Prisma.dmmf
+    } catch (e) {
+      // This will be caught by the outer try-catch
+    }
+
+    throw new Error('No DMMF found in any Prisma client modules')
   } catch (error) {
     throw new Error(
       `[prisma-field-encryption] Could not access Prisma DMMF. This might be due to:
