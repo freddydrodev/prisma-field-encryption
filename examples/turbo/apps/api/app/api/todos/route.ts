@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@repo/db'
+import { PRISMA } from '../../../lib/prisma'
 
 export async function GET() {
   try {
-    const todos = await prisma.todo.findMany({
+    const todos = await PRISMA.todo.findMany({
       orderBy: {
         createdAt: 'desc'
       }
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Title is required' }, { status: 400 })
     }
 
-    const todo = await prisma.todo.create({
+    const todo = await PRISMA.todo.create({
       data: {
         title,
         description

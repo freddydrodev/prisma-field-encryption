@@ -18,13 +18,16 @@ If not set, it defaults to `http://localhost:3001`.
 First, make sure the database is set up and the API server is running:
 
 ```bash
-# Set up the database (from the root of the turbo monorepo)
+# Set up the database with field encryption (from the root of the turbo monorepo)
 cd packages/database
 pnpm db:generate
 pnpm db:migrate
 
-# Start the API server (in a new terminal)
+# Set up environment variables for the API server
 cd apps/api
+# Create .env.local with DATABASE_URL and CLOAK_MASTER_KEY
+
+# Start the API server (in a new terminal)
 pnpm dev
 ```
 

@@ -2,7 +2,30 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Environment Configuration
+
+This API server uses field encryption for sensitive data. You need to set up the following environment variables:
+
+```bash
+# Create a .env.local file in the api app directory
+DATABASE_URL="file:../packages/database/dev.db"
+CLOAK_MASTER_KEY="your-32-character-encryption-key-here"
+```
+
+**Important**: The `CLOAK_MASTER_KEY` must be exactly 32 characters long for AES-256 encryption.
+
+### Database Setup
+
+First, set up the database with field encryption:
+
+```bash
+# From the root of the turbo monorepo
+cd packages/database
+pnpm db:generate
+pnpm db:migrate
+```
+
+### Running the API Server
 
 ```bash
 npm run dev
@@ -14,7 +37,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The API server will run on [http://localhost:3001](http://localhost:3001).
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

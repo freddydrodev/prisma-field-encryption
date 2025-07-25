@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@repo/db'
+import { PRISMA } from '../../../../lib/prisma'
 
 export async function PUT(
   request: NextRequest,
@@ -10,7 +10,7 @@ export async function PUT(
     const { title, description, completed } = body
     const { id } = await params
 
-    const todo = await prisma.todo.update({
+    const todo = await PRISMA.todo.update({
       where: { id },
       data: {
         title,
@@ -35,7 +35,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    await prisma.todo.delete({
+    await PRISMA.todo.delete({
       where: { id }
     })
 
