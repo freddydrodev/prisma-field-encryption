@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { API_URL } from '../../config/env'
 
 interface Todo {
   id: string
@@ -10,8 +11,6 @@ interface Todo {
   createdAt: string
   updatedAt: string
 }
-
-const API_BASE_URL = 'http://localhost:3001/api'
 
 export default function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -26,7 +25,7 @@ export default function TodosPage() {
 
   const fetchTodos = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/todos`)
+      const response = await fetch(`${API_URL}/api/todos`)
       if (response.ok) {
         const data = await response.json()
         setTodos(data)
@@ -44,7 +43,7 @@ export default function TodosPage() {
 
     setSubmitting(true)
     try {
-      const response = await fetch(`${API_BASE_URL}/todos`, {
+      const response = await fetch(`${API_URL}/api/todos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -73,7 +72,7 @@ export default function TodosPage() {
       const todo = todos.find(t => t.id === id)
       if (!todo) return
 
-      const response = await fetch(`${API_BASE_URL}/todos/${id}`, {
+      const response = await fetch(`${API_URL}/api/todos/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -97,7 +96,7 @@ export default function TodosPage() {
 
   const deleteTodo = async (id: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/todos/${id}`, {
+      const response = await fetch(`${API_URL}/api/todos/${id}`, {
         method: 'DELETE'
       })
 

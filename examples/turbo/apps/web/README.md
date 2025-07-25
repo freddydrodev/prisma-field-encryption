@@ -1,10 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+### Environment Configuration
+
+This web app connects to the API server. You can configure the API URL by setting the `NEXT_PUBLIC_API_URL` environment variable:
 
 ```bash
+# Create a .env.local file in the web app directory
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+If not set, it defaults to `http://localhost:3001`.
+
+### Running the Application
+
+First, make sure the database is set up and the API server is running:
+
+```bash
+# Set up the database (from the root of the turbo monorepo)
+cd packages/database
+pnpm db:generate
+pnpm db:migrate
+
+# Start the API server (in a new terminal)
+cd apps/api
+pnpm dev
+```
+
+Then, in another terminal, run the web development server:
+
+```bash
+cd apps/web
 npm run dev
 # or
 yarn dev
@@ -18,7 +45,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 
