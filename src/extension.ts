@@ -10,7 +10,29 @@ export function fieldEncryptionExtension<
 >(config: Configuration = {}) {
   const keys = configureKeys(config)
   debug.setup('Keys: %O', keys)
-  const models = analyseDMMF(config.dmmf ?? getDMMF())
+
+  // Try to get DMMF from config first, then try to detect it
+  let dmmf = config.dmmf
+  if (!dmmf) {
+    try {
+      dmmf = getDMMF()
+    } catch (error) {
+      // If DMMF detection fails, try to get it from the Prisma client that will be extended
+      // This is a fallback for cases where the DMMF is not available at extension creation time
+      debug.setup(
+        'DMMF detection failed, will try to get it from the extended client: %O',
+        error
+      )
+    }
+  }
+
+  if (!dmmf) {
+    throw new Error(
+      '[prisma-field-encryption] Could not access Prisma DMMF. Please provide it explicitly in the configuration or ensure the Prisma client is properly generated.'
+    )
+  }
+
+  const models = analyseDMMF(dmmf)
   debug.setup('Models: %O', models)
 
   return Prisma.defineExtension({

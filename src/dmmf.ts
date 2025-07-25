@@ -140,24 +140,26 @@ export function getDMMF() {
   try {
     // Try to get DMMF from the current module's Prisma import
     // This works for both default and custom Prisma client locations
-    const moduleCache = require.cache
-    const prismaModules = Object.keys(moduleCache).filter(
-      key => key.includes('@prisma/client') || key.includes('prisma')
-    )
+    if (typeof require !== 'undefined' && require.cache) {
+      const moduleCache = require.cache
+      const prismaModules = Object.keys(moduleCache).filter(
+        key => key.includes('@prisma/client') || key.includes('prisma')
+      )
 
-    for (const modulePath of prismaModules) {
-      try {
-        const module = moduleCache[modulePath]
-        if (module && module.exports) {
-          // Try to get Prisma from the module exports
-          const Prisma = module.exports.Prisma || module.exports
-          if (Prisma && Prisma.dmmf) {
-            return Prisma.dmmf
+      for (const modulePath of prismaModules) {
+        try {
+          const module = moduleCache[modulePath]
+          if (module && module.exports) {
+            // Try to get Prisma from the module exports
+            const Prisma = module.exports.Prisma || module.exports
+            if (Prisma && Prisma.dmmf) {
+              return Prisma.dmmf
+            }
           }
+        } catch (e) {
+          // Continue to next module
+          continue
         }
-      } catch (e) {
-        // Continue to next module
-        continue
       }
     }
 
