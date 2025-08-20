@@ -8,7 +8,7 @@ describe('encryption', () => {
   describe('configureKeys', () => {
     test('No encryption key specified', () => {
       const run = () => configureKeys({})
-      expect(run).toThrowError(errors.noEncryptionKey)
+      expect(run).toThrow(errors.noEncryptionKey)
     })
 
     test('Providing encryptionKey directly', () => {

@@ -1,11 +1,11 @@
 # Next.js + Prisma Field Encryption Example
 
-This example demonstrates how to use the Prisma Field Encryption library with Next.js 15 and Prisma 6.12.0.
+This example demonstrates how to use the Prisma Field Encryption library with Next.js 15 and Prisma 6.14.0.
 
 ## Features
 
 - ✅ Next.js 15 with App Router
-- ✅ Prisma 6.12.0 with field encryption
+- ✅ Prisma 6.14.0 with field encryption
 - ✅ TypeScript support
 - ✅ Tailwind CSS for styling
 - ✅ SQLite database for simplicity

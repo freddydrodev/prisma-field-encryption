@@ -1,0 +1,9 @@
+
+
+> @freddydrodev/prisma-field-encryption@0.0.0-semantically-released prebuild /Users/drofreddyjuniordiomande/.apps/libs/js/prisma-field-encryption
+> run-s generate:prisma
+
+
+> @freddydrodev/prisma-field-encryption@0.0.0-semantically-released generate:prisma /Users/drofreddyjuniordiomande/.apps/libs/js/prisma-field-encryption
+> prisma generate
+

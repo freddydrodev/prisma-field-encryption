@@ -1,0 +1,256 @@
+# Prisma Field Encryption - Cursor Rules
+
+## Project Overview
+
+This is a fork of the prisma-field-encryption library updated to support Prisma 6.14.0. The library provides transparent field-level encryption at rest for Prisma ORM applications.
+
+## Core Principles
+
+### 1. Security First
+
+- All encryption operations must use AES-256-GCM
+- Never log or expose encryption keys
+- Always validate encryption configurations
+- Maintain backward compatibility for key rotation
+
+### 2. Transparency
+
+- Encryption/decryption should be completely transparent to application code
+- Existing Prisma queries should work unchanged
+- Only specified fields should be encrypted, not entire records
+
+### 3. Performance
+
+- Minimize overhead by only encrypting specified fields
+- Use efficient algorithms and avoid unnecessary operations
+- Cache DMMF analysis when possible
+
+## Code Style & Structure
+
+### TypeScript Guidelines
+
+- Use strict TypeScript configuration
+- Prefer explicit types over `any`
+- Use generics for type safety where appropriate
+- Maintain compatibility with Prisma's type system
+
+### File Organization
+
+- `src/` - Main library code
+- `src/extension.ts` - Prisma extension implementation
+- `src/encryption.ts` - Core encryption/decryption logic
+- `src/dmmf.ts` - DMMF parsing and analysis
+- `src/types.ts` - Type definitions
+- `examples/` - Example applications
+- `tests/` - Test files
+
+### Naming Conventions
+
+- Use camelCase for variables and functions
+- Use PascalCase for types and interfaces
+- Use UPPER_SNAKE_CASE for constants
+- Prefix private functions with underscore
+
+## Development Guidelines
+
+### Adding New Features
+
+1. **Schema Annotations**: Support new annotation types in `src/dmmf.ts`
+2. **Encryption Logic**: Add new encryption modes in `src/encryption.ts`
+3. **Type Safety**: Update types in `src/types.ts`
+4. **Tests**: Add comprehensive tests for new functionality
+5. **Documentation**: Update README and examples
+
+### Testing Requirements
+
+- Unit tests for all core functions
+- Integration tests with real Prisma operations
+- Test both middleware and extension approaches
+- Test with different Prisma versions (4.7+ to 6.14.0)
+- Test error conditions and edge cases
+
+### Error Handling
+
+- Provide clear, actionable error messages
+- Include context about what went wrong
+- Suggest solutions when possible
+- Log errors appropriately without exposing sensitive data
+
+## Prisma Compatibility
+
+### Version Support
+
+- **Minimum**: Prisma 4.7.0
+- **Maximum**: Prisma 7.0.0 (exclusive)
+- **Current Target**: Prisma 6.14.0
+- Test with multiple Prisma versions
+
+### Extension System
+
+- Use Prisma's extension system for Prisma 4.7+
+- Maintain backward compatibility with middleware approach
+- Handle DMMF access carefully across versions
+- Support custom Prisma client locations
+
+### DMMF Handling
+
+- Cache DMMF analysis when possible
+- Handle DMMF access failures gracefully
+- Support both default and custom Prisma client locations
+- Validate DMMF structure before processing
+
+## Security Considerations
+
+### Key Management
+
+- Support multiple encryption keys for rotation
+- Validate key formats and strength
+- Provide clear guidance on key generation
+- Support environment variable configuration
+
+### Field Configuration
+
+- Validate field types (only String fields supported)
+- Check for encryption conflicts
+- Validate hash field configurations
+- Ensure cursor fields are not encrypted
+
+### Data Validation
+
+- Validate input data before encryption
+- Handle edge cases (null, undefined, empty strings)
+- Prevent injection attacks through field names
+- Sanitize configuration parameters
+
+## Documentation Standards
+
+### Code Comments
+
+- Document complex algorithms
+- Explain security considerations
+- Provide usage examples
+- Include type information
+
+### README Updates
+
+- Keep examples current with latest Prisma versions
+- Include setup instructions for different environments
+- Document breaking changes clearly
+- Provide troubleshooting guides
+
+### API Documentation
+
+- Document all public functions and types
+- Include parameter descriptions
+- Provide return type information
+- Show usage examples
+
+## Example Applications
+
+### Next.js Examples
+
+- Keep examples updated with latest Next.js versions
+- Demonstrate real-world usage patterns
+- Include both API routes and frontend components
+- Show proper error handling
+
+### Turbo Repo Support
+
+- Maintain monorepo compatibility
+- Handle workspace dependencies correctly
+- Support shared database packages
+- Provide setup scripts for different environments
+
+## Performance Guidelines
+
+### Optimization
+
+- Minimize object copying during encryption/decryption
+- Use efficient algorithms for large datasets
+- Cache frequently accessed data
+- Avoid unnecessary DMMF parsing
+
+### Memory Management
+
+- Handle large field values efficiently
+- Avoid memory leaks in long-running processes
+- Use streaming for very large data
+- Clean up resources properly
+
+## Deployment Considerations
+
+### Build Process
+
+- Ensure proper tree-shaking
+- Minimize bundle size
+- Support both CommonJS and ESM
+- Handle TypeScript compilation correctly
+
+### Environment Support
+
+- Support Node.js 16+
+- Handle different module systems
+- Support both development and production builds
+- Provide proper source maps
+
+## Contributing Guidelines
+
+### Code Review
+
+- Review for security implications
+- Check for performance impact
+- Ensure proper error handling
+- Validate test coverage
+
+### Testing Strategy
+
+- Run tests against multiple Prisma versions
+- Test with different database providers
+- Validate encryption/decryption correctness
+- Test error conditions and edge cases
+
+### Release Process
+
+- Update version numbers consistently
+- Update peer dependencies as needed
+- Test examples with new versions
+- Update documentation
+
+## Troubleshooting
+
+### Common Issues
+
+- DMMF access failures
+- Key configuration problems
+- Field type mismatches
+- Performance issues with large datasets
+
+### Debugging
+
+- Use debug logging for troubleshooting
+- Provide clear error messages
+- Include context in error reports
+- Support development mode with additional logging
+
+## Future Considerations
+
+### Prisma Version Updates
+
+- Monitor Prisma releases for breaking changes
+- Test with beta versions when possible
+- Plan for major version migrations
+- Maintain backward compatibility
+
+### Feature Roadmap
+
+- Support for additional field types
+- Enhanced hash field options
+- Performance optimizations
+- Additional encryption algorithms
+
+### Community Support
+
+- Respond to issues promptly
+- Provide clear documentation
+- Maintain example applications
+- Support different use cases
